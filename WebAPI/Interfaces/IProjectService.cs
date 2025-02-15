@@ -1,13 +1,14 @@
-﻿using WebAPI.Models;
+﻿using WebAPI.DTOs;
 
 namespace WebAPI.Interfaces;
 
 public interface IProjectService
 {
-    Task<List<Project>> GetAllProjectAsync();
-    Task<List<Project>> GetProjectsByCustomerIdAsync(int id);
-    Task<Project> GetProjectByIdAsynce(int id);
-    Task<Project> CreateProjectAsync(Project project);
-    Task<Project> UpdateProjectAsync(int id, Project project);
-    Task DeleteProjectAsync(int id);
+    Task<List<ProjectDTO>> GetAllProjectAsync();
+    Task<List<ProjectDTO>> GetProjectsByCustomerIdAsync(int CustomerId);
+    Task<List<ProjectDTO>> GetProjectsByEmployeeIdAsync(int employeeId);
+    Task<ProjectDTO> GetProjectByIdAsynce(int projectId);
+    Task<ProjectDTO> CreateProjectAsync(ProjectDTO projectDTO);
+    Task<ProjectDTO> UpdateProjectAsync(int id, ProjectDTO projectDTO);
+    Task DeleteProjectAsync(int projectId);
 }

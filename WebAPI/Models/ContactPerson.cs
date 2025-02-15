@@ -8,13 +8,14 @@ public class ContactPerson
     [Key]
     public int Id { get; set; }
     [Required]
-    public string Name { get; set; }
+    public required string FirstName { get; set; }
     [Required]
-    public string Email { get; set; }
-    public string PhoneNumber { get; set; }
+    public required string LastName { get; set; }
+    [Required]
+    public required string Email { get; set; }
+    public string? PhoneNumber { get; set; }
 
     public List<Customer> Customers { get; } = [];
-    public List<CustomerContactPerson> customerContactPeople { get; } = [];
 }
 
 

@@ -1,4 +1,6 @@
-﻿using WebAPI.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using WebAPI.Models;
 
 namespace WebAPI.DTOs;
 
@@ -7,9 +9,9 @@ public class ProjectDTO
     public string Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; } = string.Empty;
-    public DateOnly startDate { get; set; }
-    public DateOnly endDate { get; set; }
-    public int StatusTypeId { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public StatusType Status { get; set; }
     public int CusomerId { get; set; }
     public int EmployeeId { get; set; }
     public int ServiceId { get; set; }
@@ -18,11 +20,11 @@ public class ProjectDTO
         Id = project.Id;
         Name = project.Name;
         Description = project.Description;
-        startDate = project.startDate;
-        endDate = project.endDate;
-        StatusTypeId = project.StatusTypeId;
+        StartDate = project.StartDate;
+        EndDate = project.EndDate;
         CusomerId = project.CusomerId;
         EmployeeId = project.EmployeeId;
         ServiceId = project.ServiceId;
+        Status = project.Status;
     }
 }
