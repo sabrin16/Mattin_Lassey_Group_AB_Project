@@ -1,91 +1,106 @@
-﻿//using Microsoft.EntityFrameworkCore;
-//using Microsoft.VisualBasic;
-//using WebAPI.Data;
-//using WebAPI.DTOs;
-//using WebAPI.Interfaces;
-//using WebAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using WebAPI.Data;
+using WebAPI.DTOs;
+using WebAPI.Interfaces;
+using WebAPI.Models;
 
-//namespace WebAPI.Services
-//{
-//    public class ProjectService : IProjectService
-//    {
-//        private readonly ProjectDBContext _dbContext;
+namespace WebAPI.Services
+{
+    public class ProjectService : IProjectService
+    {
+        private readonly ProjectDBContext _dbContext;
 
-//        public ProjectService(ProjectDBContext dbContext)
-//        {
-//            _dbContext = dbContext;
-//        }
-//        public async Task<Project> CreateProjectAsync(Project project)
-//        {
-//            _dbContext.Projects.Add(project);
-//            await _dbContext.SaveChangesAsync();
-//            return project;
-//        }
+        public ProjectService(ProjectDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
-//        public Task<ProjectDTO> CreateProjectAsync(ProjectDTO projectDTO)
-//        {
-//            throw new NotImplementedException();
-//        }
 
-//        public async Task DeleteProjectAsync(int id)
-//        {
-//            var project = await _dbContext.Projects.FindAsync(id);
-//            if (project != null)
-//            {
-//                _dbContext.Projects.Remove(project);
-//                await _dbContext.SaveChangesAsync();
-//            }
-//        }
+        public async Task<ProjectDTO> CreateProjectAsync(ProjectDTO projectDTO)
+        {
+            Project project = new Project
+            {
+                Name = projectDTO.Name,
+                StartDate = projectDTO.StartDate,
+                EndDate = projectDTO.EndDate,
+                ServiceId = projectDTO.ServiceId,
+                Status = projectDTO.Status,
+                EmployeeId = projectDTO.EmployeeId,
+                CusomerId = projectDTO.CusomerId,
+            };
+            _dbContext.Projects.Add(project);
+            await _dbContext.SaveChangesAsync();
+            return projectDTO;
+        }
 
-//        public async Task<List<Project>> GetAllProjectAsync()
-//        {
-//            return await _dbContext.Projects.ToListAsync();
-//        }
+        public async Task DeleteProjectAsync(int id)
+        {
+            var project = await _dbContext.Projects.FindAsync(id);
+            if (project != null)
+            {
+                _dbContext.Projects.Remove(project);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
 
-//        public async Task<Project> GetProjectByIdAsynce(int id)
-//        {
-//            return await _dbContext.Projects.FindAsync(id);
-//        }
+        public async Task<ProjectDTO?> GetProjectByIdAsynce(int projectId)
+        {
+            var project = await _dbContext.Projects.FindAsync(projectId);
+            if (project != null)
+            {
+                ProjectDTO projectDTO = new ProjectDTO(project);
+                return projectDTO;
+            }
+            return (null);
+        }
 
-//        public async Task<List<Project>> GetProjectsByCustomerIdAsync(int id)
-//        {
-//            return await _dbContext.Projects.Where(p => p.CusomerId == id).ToListAsync();
-//        }
+        public async Task<List<ProjectDTO>?> GetProjectsByEmployeeIdAsync(int employeeId)
+        {
+            var employee = await _dbContext.Employees.Include(e => e.Projects)
+                                               .FirstOrDefaultAsync(e => e.Id == employeeId);
+            if (employee != null)
+            {
+                return employee.Projects.Select(project => new ProjectDTO(project)).ToList();
+            }
+            return null;
 
-//        public Task<List<ProjectDTO>> GetProjectsByEmployeeIdAsync(int employeeId)
-//        {
-//            throw new NotImplementedException();
-//        }
+        }
 
-//        public async Task<Project> UpdateProjectAsync(int id, Project project)
-//        {
-//            var currentProject = await _dbContext.Projects.FindAsync(id);
-//            if (currentProject != null) { 
-//               currentProject.Name = project.Name;
-//                currentProject.CusomerId = id;
-//                await _dbContext.SaveChangesAsync();
-//            }
-//            return currentProject;
-//        }
+        public async Task<List<ProjectDTO>?> GetProjectsByCustomerIdAsync(int customerId)
+        {
+            var customer = await _dbContext.Customers.Include(c => c.Projects)
+                                               .FirstOrDefaultAsync(c => c.Id == customerId);
+            if (customer != null)
+            {
+                return customer.Projects.Select(project => new ProjectDTO(project)).ToList();
+            }
+            return null;
+        }
 
-//        public Task<ProjectDTO> UpdateProjectAsync(int id, ProjectDTO projectDTO)
-//        {
-//            throw new NotImplementedException();
-//        }
+        public async Task<ProjectDTO?> UpdateProjectAsync(int projectId, ProjectDTO project)
+        {
+            var currentProject = await _dbContext.Projects.FindAsync(projectId);
+            if (currentProject != null)
+            {
+                currentProject.Name = project.Name;
+                currentProject.Description = project.Description;
+                currentProject.StartDate = project.StartDate;
+                currentProject.EndDate = project.EndDate;
+                currentProject.ServiceId = project.ServiceId;
+                currentProject.Status = project.Status;
+                currentProject.EmployeeId = project.EmployeeId;
+                currentProject.CusomerId = project.CusomerId;
+                await _dbContext.SaveChangesAsync();
+                return project;
+            }
+            return null;
+        }
 
-//        Task<List<ProjectDTO>> IProjectService.GetAllProjectAsync()
-//        {
-//            throw new NotImplementedException();
-//        }
-
-//        Task<ProjectDTO> IProjectService.GetProjectByIdAsynce(int projectId)
-//        {
-//            throw new NotImplementedException();
-//        }
-
-//        Task<List<ProjectDTO>> IProjectService.GetProjectsByCustomerIdAsync(int CustomerId)
-//        {
-//            throw new NotImplementedException();
-//        }
-//    }
-//}
+        public async Task<List<ProjectDTO>> GetAllProjectAsync()
+        {
+            var projects = await _dbContext.Projects.ToListAsync();
+            return projects.Select(project => new ProjectDTO(project)).ToList();
+        }
+    }
+}

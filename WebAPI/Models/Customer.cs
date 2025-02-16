@@ -13,5 +13,5 @@ public class Customer
     public string PhoneNumber { get; set; } = string.Empty;
 
     public virtual List<Project> Projects { get; set; } = new();
-    public virtual List<ContactPerson> ContactPersons { get; } = new();
+    public virtual List<ContactPerson> ContactPeople { get; } = new();
 }

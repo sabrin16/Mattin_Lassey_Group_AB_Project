@@ -4,12 +4,12 @@ namespace WebAPI.DTOs;
 public class ServiceDTO
 {
     public int Id { get; set; }
-    public required string ServiceName { get; set; }
-    public required decimal Price { get; set; }
-    public required string UnitName { get; set; }
-    public required string CurrencyName { get; set; }
+    public string ServiceName { get; set; }
+    public decimal Price { get; set; }
+    public string UnitName { get; set; }
+    public string CurrencyName { get; set; }
 
-    public ServiceDTO (Service service)
+    public ServiceDTO(Service service)
     {
         Id = service.Id;
         ServiceName = service.ServiceName;

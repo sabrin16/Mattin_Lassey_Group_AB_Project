@@ -14,7 +14,7 @@ public class ProjectDBContext : DbContext
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<ContactPerson> ContactPeople { get; set; }
-    public DbSet<Employee> Employees{ get; set; }
+    public DbSet<Employee> Employees { get; set; }
     public DbSet<Service> Services { get; set; }
 
 
@@ -33,7 +33,7 @@ public class ProjectDBContext : DbContext
             .HasForeignKey(p => p.CusomerId);
 
         modelBuilder.Entity<Customer>()
-            .HasMany(c => c.ContactPersons)
+            .HasMany(c => c.ContactPeople)
             .WithMany(cp => cp.Customers)
             .UsingEntity(k => k.ToTable("ContactPersonCustomer"));
 

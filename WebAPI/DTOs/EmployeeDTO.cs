@@ -6,15 +6,16 @@ namespace WebAPI.DTOs;
 public class EmployeeDTO
 {
     public int Id { get; set; }
-    public required string FirstName { get; set; }
-    public required string LastName { get; set; }
-    public required string RoleName { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string RoleName { get; set; }
 
     public EmployeeDTO(Employee employee)
     {
         Id = employee.Id;
-        FirstName = employee.FirstName;
-        LastName = employee.LastName;
         RoleName = employee.RoleName;
+        LastName = employee.LastName;
+        FirstName = employee.FirstName;
+
     }
 }

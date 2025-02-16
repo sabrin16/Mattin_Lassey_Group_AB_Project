@@ -4,10 +4,10 @@ namespace WebAPI.Interfaces
 {
     public interface IContactPersonService
     {
-        Task<List<ContactPersonDTO>> GetContactPersonsAsync();
-        Task<ContactPersonDTO> GetContactsPersonByIdAsync(int contactPersonId);
+        Task<List<ContactPersonDTO>> GetAllContactPersonsAsync();
+        Task<ContactPersonDTO?> GetContactsPersonByIdAsync(int contactPersonId);
         Task<ContactPersonDTO> CreateContactPersonAsync(ContactPersonDTO contactPersonDTO);
-        Task<ContactPersonDTO> UpdateContactPersonAsync(int contactPersonId, ContactPersonDTO contactPersonDTO);
+        Task<ContactPersonDTO?> UpdateContactPersonAsync(int contactPersonId, ContactPersonDTO contactPersonDTO);
         Task<bool> DeleteContactPersonAsync(int contactPersonId);
     }
 }

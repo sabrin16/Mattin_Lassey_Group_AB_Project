@@ -17,20 +17,23 @@ namespace WebAPI.Services
 
         public async Task<bool> AddProjectToCustomerProjectsAsync(int customerId, int projectId)
         {
-            var customer = await _dbContext.Customers.Include(p => p.Projects)
-                                               .FirstOrDefaultAsync(p => p.Id == customerId);
+            var customer = await _dbContext.Customers.Include(c => c.Projects)
+                                               .FirstOrDefaultAsync(c => c.Id == customerId);
             var project = await _dbContext.Projects.FindAsync(projectId);
 
-            if (customer != null && project != null) {
+            if (customer != null && project != null)
+            {
                 if (!customer.Projects.Any(p => p.Id.Equals(projectId)))
                 {
                     customer.Projects.Add(project);
+                    
                     await _dbContext.SaveChangesAsync();
+                    return true;
                 }
             }
 
             return false;
-            
+
         }
 
         public async Task<CustomerDTO> CreateCustomerAsync(CustomerDTO customerDTO)
@@ -51,7 +54,8 @@ namespace WebAPI.Services
         public async Task<bool> DeleteCustomerAsync(int customerId)
         {
             var customer = await _dbContext.Customers.FindAsync(customerId);
-            if (customer != null) { 
+            if (customer != null)
+            {
                 _dbContext.Customers.Remove(customer);
                 await _dbContext.SaveChangesAsync();
                 return true;
@@ -78,14 +82,15 @@ namespace WebAPI.Services
 
         public async Task<bool> RemoveProjectFromCustomerProjectsAsync(int customerId, int projectId)
         {
-            var customer = await _dbContext.Customers.Include(p => p.Projects)
-                                               .FirstOrDefaultAsync(p => p.Id == customerId);
+            var customer = await _dbContext.Customers.Include(c => c.Projects)
+                                               .FirstOrDefaultAsync(c => c.Id == customerId);
             var project = await _dbContext.Projects.FindAsync(projectId);
 
             if (customer != null && project != null)
             {
                 customer.Projects.Remove(project);
                 await _dbContext.SaveChangesAsync();
+                return true;
             }
 
             return false;
@@ -94,13 +99,15 @@ namespace WebAPI.Services
         public async Task<CustomerDTO> UpdateCustomerAsync(int customerId, CustomerDTO customerDTO)
         {
             var currentCustomer = await _dbContext.Customers.FindAsync(customerId);
-            if (currentCustomer != null) { 
+            if (currentCustomer != null)
+            {
                 currentCustomer.Name = customerDTO.Name;
                 currentCustomer.Email = customerDTO.Email;
                 currentCustomer.PhoneNumber = customerDTO.PhoneNumber;
                 await _dbContext.SaveChangesAsync();
+                return customerDTO;
             }
-            return customerDTO;
+            return null;
         }
     }
 }

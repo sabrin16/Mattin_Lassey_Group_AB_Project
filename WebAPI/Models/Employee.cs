@@ -11,14 +11,8 @@ public class Employee
     public required string FirstName { get; set; }
     [Required]
     public required string LastName { get; set; }
-    //[Required]
-    //[ForeignKey("Role")]
-    //public int RoleId { get; set; }
-
     [Required]
     public required string RoleName { get; set; }
-
-    //public virtual Role? Role  { get; set; }
 
     public virtual List<Project> Projects { get; set; } = new();
 }
