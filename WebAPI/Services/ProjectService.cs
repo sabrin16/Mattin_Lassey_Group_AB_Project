@@ -31,20 +31,22 @@ namespace WebAPI.Services
             };
             _dbContext.Projects.Add(project);
             await _dbContext.SaveChangesAsync();
-            return projectDTO;
+            return new ProjectDTO(project);
         }
 
-        public async Task DeleteProjectAsync(int id)
+        public async Task<bool> DeleteProjectAsync(int id)
         {
             var project = await _dbContext.Projects.FindAsync(id);
             if (project != null)
             {
                 _dbContext.Projects.Remove(project);
                 await _dbContext.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
-        public async Task<ProjectDTO?> GetProjectByIdAsynce(int projectId)
+        public async Task<ProjectDTO?> GetProjectByIdAsync(int projectId)
         {
             var project = await _dbContext.Projects.FindAsync(projectId);
             if (project != null)
@@ -92,7 +94,7 @@ namespace WebAPI.Services
                 currentProject.EmployeeId = project.EmployeeId;
                 currentProject.CusomerId = project.CusomerId;
                 await _dbContext.SaveChangesAsync();
-                return project;
+                return new ProjectDTO(currentProject);
             }
             return null;
         }

@@ -8,7 +8,7 @@ public class ServiceDTO
     public decimal Price { get; set; }
     public string UnitName { get; set; }
     public string CurrencyName { get; set; }
-
+    public ServiceDTO() { }
     public ServiceDTO(Service service)
     {
         Id = service.Id;

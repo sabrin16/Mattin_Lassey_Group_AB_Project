@@ -10,6 +10,7 @@ public class ContactPersonDTO
     public string Email { get; set; }
     public string? PhoneNumber { get; set; }
 
+    public ContactPersonDTO() { }
     public ContactPersonDTO(ContactPerson contactPeson)
     {
         Id = contactPeson.Id;

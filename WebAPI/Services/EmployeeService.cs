@@ -42,7 +42,7 @@ namespace WebAPI.Services
 
             _dbContext.Employees.Add(employee);
             await _dbContext.SaveChangesAsync();
-            return employeeDTO;
+            return new EmployeeDTO(employee);
         }
 
         public async Task<bool> DeleteEmployeeAsync(int employeeId)
@@ -99,7 +99,7 @@ namespace WebAPI.Services
                 currentEmployee.LastName = employeeDTO.LastName;
                 currentEmployee.RoleName = employeeDTO.RoleName;
                 await _dbContext.SaveChangesAsync();
-                return employeeDTO;
+                return new EmployeeDTO(currentEmployee);
             }
             return null;
         }

@@ -9,13 +9,14 @@ namespace WebAPI.DTOs
         public string Name { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; } = string.Empty;
-
-        public CustomerDTO(Customer customer) {
+        public CustomerDTO() { }
+        public CustomerDTO(Customer customer)
+        {
             Id = customer.Id;
             Name = customer.Name;
             Email = customer.Email;
             PhoneNumber = customer.PhoneNumber;
         }
-        
+
     }
 }

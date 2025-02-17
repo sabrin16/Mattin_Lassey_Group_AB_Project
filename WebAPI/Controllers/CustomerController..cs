@@ -20,57 +20,106 @@ public class CustomerController : ControllerBase
 
         return Ok(customers);
     }
+
     [HttpGet("{customerId}")]
     public async Task<ActionResult<CustomerDTO>> GetCustomerByIdAsync(int customerId)
     {
         var customer = await _customerService.GetCustomerByIdAsync(customerId);
-        if (customer == null) {
+        if (customer == null)
+        {
             return NotFound($"There is no customer with ID: {customerId}.");
         }
         return Ok(customer);
     }
     [HttpPost]
-    public async Task<ActionResult<CustomerDTO>> CreateCustomerAsync( CustomerDTO customerDTO)
+    public async Task<ActionResult<CustomerDTO>> CreateCustomerAsync([FromBody] CustomerDTO customerDTO)
     {
-        await _customerService.CreateCustomerAsync(customerDTO);
-        return customerDTO;
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createdCustomer = await _customerService.CreateCustomerAsync(customerDTO);
+            return createdCustomer;
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+
     }
     [HttpPut("{customerId}")]
     public async Task<ActionResult<CustomerDTO>> UpdateCustomerAsync(int customerId, CustomerDTO customerDTO)
     {
-        var currentCustomerDTO = await _customerService.GetCustomerByIdAsync(customerId);
-        if (currentCustomerDTO == null) {
-            return NotFound($"There is no customer with ID: {customerId} to be updated!");
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var updatedCustomer = await _customerService.UpdateCustomerAsync(customerId, customerDTO);
+            if (updatedCustomer == null)
+            {
+                return NotFound($"Customer with ID {customerId} not found.");
+            }
+            return Ok(updatedCustomer);
         }
-        await _customerService.UpdateCustomerAsync(customerId, customerDTO);
-        return customerDTO;
-            
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+
     }
 
     [HttpDelete("{customerId}")]
-    public async Task<ActionResult<bool>> DeleteCustomerAsync(int customerId)
+    public async Task<ActionResult<bool>> DeleteCustomer(int customerId)
     {
-        var currentCustomerDTO = await _customerService.GetCustomerByIdAsync(customerId);
-        if (currentCustomerDTO == null)
-        {
-            return NotFound($"There is no customer with ID: {customerId} to be deleted!");
-        }
-        await _customerService.DeleteCustomerAsync(customerId);
-        return true;
+        bool isDeleted = await _customerService.DeleteCustomerAsync(customerId);
 
+        if (isDeleted)
+        {
+            return Ok(true);
+        }
+
+        return NotFound(false);
     }
 
-    [HttpPost("{customerId}/project/{projectId}")]
+    [HttpPost("{customerId}/addProjectToCustomer/{projectId}")]
     public async Task<ActionResult<bool>> AddProjectToCustomerProjects(int customerId, int projectId)
     {
-        bool result = await _customerService.AddProjectToCustomerProjectsAsync(customerId, projectId);
-        return result;
+        try
+        {
+            var result = await _customerService.AddProjectToCustomerProjectsAsync(customerId, projectId);
+            if (!result)
+            {
+                return NotFound(false);
+            }
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
-    [HttpPost]
+
+
+    [HttpPost("{customerId}/removeProjectFromeCustomer/{projectId}")]
     public async Task<ActionResult<bool>> RemoveProjectFromCustomerProjectsAsync(int customerId, int projectId)
     {
-        bool result = await _customerService.RemoveProjectFromCustomerProjectsAsync(customerId, projectId);
-        return result;
+        try
+        {
+            var result = await _customerService.RemoveProjectFromCustomerProjectsAsync(customerId, projectId);
+            if (!result)
+            {
+                return NotFound(false);
+            }
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
 
 }

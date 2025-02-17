@@ -24,13 +24,13 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("ContactPersonCustomer", b =>
                 {
-                    b.Property<int>("ContactPersonsId")
+                    b.Property<int>("ContactPeopleId")
                         .HasColumnType("int");
 
                     b.Property<int>("CustomersId")
                         .HasColumnType("int");
 
-                    b.HasKey("ContactPersonsId", "CustomersId");
+                    b.HasKey("ContactPeopleId", "CustomersId");
 
                     b.HasIndex("CustomersId");
 
@@ -117,8 +117,11 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.Project", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CusomerId")
                         .HasColumnType("int");
@@ -185,7 +188,7 @@ namespace WebAPI.Migrations
                 {
                     b.HasOne("WebAPI.Models.ContactPerson", null)
                         .WithMany()
-                        .HasForeignKey("ContactPersonsId")
+                        .HasForeignKey("ContactPeopleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

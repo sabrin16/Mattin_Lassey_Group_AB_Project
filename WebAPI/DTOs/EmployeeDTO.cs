@@ -9,7 +9,7 @@ public class EmployeeDTO
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string RoleName { get; set; }
-
+    public EmployeeDTO() { }
     public EmployeeDTO(Employee employee)
     {
         Id = employee.Id;

@@ -28,7 +28,7 @@ namespace WebAPI.Services
 
             _dbContext.ContactPeople.Add(contactPerson);
             await _dbContext.SaveChangesAsync();
-            return contactPersonDTO;
+            return new ContactPersonDTO(contactPerson);
         }
 
         public async Task<bool> DeleteContactPersonAsync(int contactPersonId)

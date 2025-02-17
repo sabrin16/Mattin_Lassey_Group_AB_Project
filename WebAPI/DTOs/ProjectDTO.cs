@@ -6,7 +6,7 @@ namespace WebAPI.DTOs;
 
 public class ProjectDTO
 {
-    public string Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; } = string.Empty;
     public DateTime StartDate { get; set; }
@@ -15,8 +15,9 @@ public class ProjectDTO
     public int CusomerId { get; set; }
     public int EmployeeId { get; set; }
     public int ServiceId { get; set; }
-
-    public ProjectDTO(Project project) {
+    public ProjectDTO() { }
+    public ProjectDTO(Project project)
+    {
         Id = project.Id;
         Name = project.Name;
         Description = project.Description;

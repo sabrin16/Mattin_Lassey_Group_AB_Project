@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class MadeSimpler : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,15 +77,15 @@ namespace WebAPI.Migrations
                 name: "ContactPersonCustomer",
                 columns: table => new
                 {
-                    ContactPersonsId = table.Column<int>(type: "int", nullable: false),
+                    ContactPeopleId = table.Column<int>(type: "int", nullable: false),
                     CustomersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContactPersonCustomer", x => new { x.ContactPersonsId, x.CustomersId });
+                    table.PrimaryKey("PK_ContactPersonCustomer", x => new { x.ContactPeopleId, x.CustomersId });
                     table.ForeignKey(
-                        name: "FK_ContactPersonCustomer_ContactPeople_ContactPersonsId",
-                        column: x => x.ContactPersonsId,
+                        name: "FK_ContactPersonCustomer_ContactPeople_ContactPeopleId",
+                        column: x => x.ContactPeopleId,
                         principalTable: "ContactPeople",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -101,15 +101,16 @@ namespace WebAPI.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    startDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    endDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CusomerId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     ServiceId = table.Column<int>(type: "int", nullable: false),
-                    StatusType = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

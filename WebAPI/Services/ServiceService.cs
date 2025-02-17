@@ -27,7 +27,7 @@ namespace WebAPI.Services
 
             _dbContext.Services.Add(service);
             await _dbContext.SaveChangesAsync();
-            return serviceDTO;
+            return new ServiceDTO(service);
         }
 
         public async Task<bool> DeleteServiceAsync(int serviceId)

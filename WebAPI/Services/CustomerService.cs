@@ -26,7 +26,7 @@ namespace WebAPI.Services
                 if (!customer.Projects.Any(p => p.Id.Equals(projectId)))
                 {
                     customer.Projects.Add(project);
-                    
+
                     await _dbContext.SaveChangesAsync();
                     return true;
                 }
@@ -48,7 +48,7 @@ namespace WebAPI.Services
 
             _dbContext.Customers.Add(customer);
             await _dbContext.SaveChangesAsync();
-            return customerDTO;
+            return new CustomerDTO(customer);
         }
 
         public async Task<bool> DeleteCustomerAsync(int customerId)
@@ -96,7 +96,7 @@ namespace WebAPI.Services
             return false;
         }
 
-        public async Task<CustomerDTO> UpdateCustomerAsync(int customerId, CustomerDTO customerDTO)
+        public async Task<CustomerDTO?> UpdateCustomerAsync(int customerId, CustomerDTO customerDTO)
         {
             var currentCustomer = await _dbContext.Customers.FindAsync(customerId);
             if (currentCustomer != null)

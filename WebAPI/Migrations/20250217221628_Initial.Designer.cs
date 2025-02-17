@@ -12,8 +12,8 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(ProjectDBContext))]
-    [Migration("20250215153549_MadeSimplerTwo")]
-    partial class MadeSimplerTwo
+    [Migration("20250217221628_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,13 +27,13 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("ContactPersonCustomer", b =>
                 {
-                    b.Property<int>("ContactPersonsId")
+                    b.Property<int>("ContactPeopleId")
                         .HasColumnType("int");
 
                     b.Property<int>("CustomersId")
                         .HasColumnType("int");
 
-                    b.HasKey("ContactPersonsId", "CustomersId");
+                    b.HasKey("ContactPeopleId", "CustomersId");
 
                     b.HasIndex("CustomersId");
 
@@ -120,8 +120,11 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.Project", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CusomerId")
                         .HasColumnType("int");
@@ -133,6 +136,9 @@ namespace WebAPI.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -140,15 +146,11 @@ namespace WebAPI.Migrations
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<string>("StatusType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("endDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("startDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -189,7 +191,7 @@ namespace WebAPI.Migrations
                 {
                     b.HasOne("WebAPI.Models.ContactPerson", null)
                         .WithMany()
-                        .HasForeignKey("ContactPersonsId")
+                        .HasForeignKey("ContactPeopleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
